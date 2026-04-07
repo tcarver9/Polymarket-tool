@@ -1,0 +1,53 @@
+scanner:
+  shadow_mode: false  # Start in shadow mode for testing
+  scan_interval_seconds: 60
+  
+alert:
+  top_n: 100  # Show many opportunities (will be split into multiple Discord messages)
+  interval_seconds: 60  # Wait 1 minute between repeat alerts
+  min_score_threshold: 0.0  # Very lenient - show everything above 0
+  use_webhook: true  # Set to true to use webhook instead of bot
+  
+model_engine:
+  enabled: false  # Disable complex model for now - focus on simple arbitrage
+  min_edge_bps: 10  # Very low - 0.1% edge minimum
+  min_liquidity: 10  # Very low liquidity requirement
+  max_spread_bps: 2000  # Allow very wide spreads
+  min_confidence: 0.1  # Very low confidence requirement
+  max_staleness_hours: 168  # Allow up to 1 week old estimates
+  
+cross_market_engine:
+  enabled: false  # Disable complex cross-market for now
+  
+simple_arbitrage_engine:
+  enabled: true
+  min_edge_bps: 5  # Very low - 0.05% edge minimum
+  
+market_making_engine:
+  enabled: false  # Disable for now - focus on simple arbitrage
+  min_spread_bps: 10  # Very low - accept tiny spreads
+  min_liquidity: 50  # Very low liquidity requirement
+  min_flow_balance: 0.0  # No flow balance requirement
+  max_volatility: 1.0  # Allow very volatile markets
+  
+filters:
+  min_liquidity: 10  # Very low - accept almost any liquidity
+  max_spread_bps: 2000  # Very wide - allow almost any spread
+  min_volume_24h: 0  # No volume requirement
+  min_days_to_resolution: -30  # Allow recently resolved markets
+  max_days_to_resolution: 1095  # Allow up to 3 years
+  
+probability_models:
+  market_consensus:
+    enabled: true
+    weight: 0.40
+  base_rate:
+    enabled: true
+    weight: 0.20
+  external_data:
+    enabled: true
+    weight: 0.40
+    apis:
+      coingecko: true
+      odds_api: false  # Need API key
+      weather: false   # Need API key
